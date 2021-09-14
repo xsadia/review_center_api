@@ -1,11 +1,12 @@
 import { model, Schema, Types, Document } from 'mongoose';
+import { IReview } from './Review';
 
-interface IMovie extends Document {
+export interface IMovie extends Document {
     title: string;
     firstAirDate: Date;
     overview: string;
     score: number;
-    reviews: Array<Types.ObjectId>;
+    reviews: Array<IReview['_id']>;
     createdAt: Date;
     deletedAt: Date;
 }
