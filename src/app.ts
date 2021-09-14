@@ -8,7 +8,6 @@ import { schema } from './graphql/schema';
 import dotenv from 'dotenv';
 
 dotenv.config();
-const isDev = !!process.env.DEVELOPMENT;
 
 const app = new Koa();
 const router = new Router();
@@ -17,7 +16,7 @@ const graphqlSettingsPerReq = async (req) => {
     //const { user } = await getUser(req.header.authorization);
 
     return {
-        graphiql: isDev,
+        graphiql: true,
         schema,
         context: {
             req,
