@@ -10,15 +10,15 @@ export const UserType = new GraphQLObjectType({
     fields: () => ({
         id: globalIdField('User'),
         username: {
-            type: new GraphQLNonNull(GraphQLString),
+            type: GraphQLString,
             resolve: ({ username }) => username
         },
         email: {
-            type: new GraphQLNonNull(GraphQLString),
+            type: GraphQLString,
             resolve: ({ email }) => email
         },
         password: {
-            type: new GraphQLNonNull(GraphQLString),
+            type: GraphQLString,
             resolve: ({ password }) => password
         },
         reviews: {
