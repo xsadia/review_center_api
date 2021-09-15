@@ -24,14 +24,14 @@ export const UserType = new GraphQLObjectType({
         reviews: {
             type: ReviewConnection,
             args: connectionArgs,
-            resolve: async (movie, args, context) => {
-                const reviews = await Review.find({ movieId: movie._id });
+            resolve: async (user, args, context) => {
+                const reviews = await Review.find({ userId: user._id });
 
                 return connectionFromArray(reviews, args);
             }
         },
         createdAt: {
-            type: new GraphQLNonNull(GraphQLString),
+            type: GraphQLString,
             resolve: ({ createdAt }) => createdAt
         }
     }),
