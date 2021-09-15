@@ -51,8 +51,6 @@ export default mutationWithClientMutationId({
 
         await user.save();
 
-        console.log(user);
-
         const { secret, expiresIn } = authConfig.jwt;
 
         const token = sign({}, secret, {
