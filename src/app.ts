@@ -6,19 +6,20 @@ import graphqlHTTP from 'koa-graphql';
 import bodyParser from 'koa-bodyparser';
 import { schema } from './graphql/schema';
 import dotenv from 'dotenv';
+import { authMiddleware } from './middlewares/authMiddleware';
 
 dotenv.config();
 
 const app = new Koa();
 const router = new Router();
 
-const graphqlSettingsPerReq = async (req) => {
-    //const { user } = await getUser(req.header.authorization);
-
+const graphqlSettingsPerReq = async (req, _, ctx) => {
+    const { user } = ctx;
     return {
         graphiql: true,
         schema,
         context: {
+            user,
             req,
         },
         formatError: (error) => {
@@ -39,6 +40,7 @@ const graphqlServer = graphqlHTTP(graphqlSettingsPerReq);
 
 router.all('/graphql', graphqlServer);
 
+app.use(authMiddleware);
 app.use(bodyParser());
 app.use(convert(cors()));
 
