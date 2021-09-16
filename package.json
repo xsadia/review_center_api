@@ -9,6 +9,7 @@
     "start": "node dist/server.js"
   },
   "dependencies": {
+    "axios": "^0.21.4",
     "bcryptjs": "^2.4.3",
     "dotenv": "^10.0.0",
     "graphql": "^15.5.3",
@@ -20,8 +21,7 @@
     "koa-cors": "^0.0.16",
     "koa-graphql": "^0.9.0",
     "koa-router": "^10.1.1",
-    "mongoose": "^6.0.5",
-    "node-fetch": "^3.0.0"
+    "mongoose": "^6.0.5"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
