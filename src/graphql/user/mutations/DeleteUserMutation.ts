@@ -4,9 +4,10 @@ import { User } from "../../../models/User";
 
 export default mutationWithClientMutationId({
     name: 'DeleteUser',
+    description: 'Delete User Mutation',
     inputFields: {},
     mutateAndGetPayload: async (_, { user }) => {
-        if (!user) {
+        if (!user._id) {
             return {
                 success: false,
                 error: 'Permission denied'
