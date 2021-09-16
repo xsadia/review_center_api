@@ -9,6 +9,10 @@ export const MovieType = new GraphQLObjectType({
     description: 'Movie type',
     fields: () => ({
         id: globalIdField('Movie'),
+        tmdbId: {
+            type: GraphQLString,
+            resolve: ({ tmdbId }) => tmdbId
+        },
         title: {
             type: GraphQLString,
             resolve: ({ title }) => title

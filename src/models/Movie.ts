@@ -2,6 +2,7 @@ import { model, Schema, Types, Document } from 'mongoose';
 import { IReview } from './Review';
 
 export interface IMovie extends Document {
+    tmdbId: string;
     title: string;
     firstAirDate: Date;
     overview: string;
@@ -13,6 +14,10 @@ export interface IMovie extends Document {
 }
 
 const MovieSchema = new Schema({
+    tmdbId: {
+        type: String,
+        required: true
+    },
     title: {
         type: String,
         required: true
