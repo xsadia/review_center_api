@@ -7,6 +7,7 @@ export interface IMovie extends Document {
     overview: string;
     score: number;
     reviews: Array<IReview['_id']>;
+    posterPath: string;
     createdAt: Date;
     deletedAt: Date;
 }
@@ -34,6 +35,10 @@ const MovieSchema = new Schema({
             ref: 'Review'
         }
     ],
+    posterPath: {
+        type: String,
+        required: true
+    },
     createdAt: {
         type: Date,
         default: Date.now

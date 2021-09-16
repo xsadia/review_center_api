@@ -34,6 +34,10 @@ export const MovieType = new GraphQLObjectType({
                 return connectionFromArray(reviews, args);
             }
         },
+        posterPath: {
+            type: GraphQLString,
+            resolve: ({ posterPath }) => posterPath
+        },
         createdAt: {
             type: GraphQLString,
             resolve: ({ createdAt }) => createdAt
