@@ -1,4 +1,4 @@
-import { GraphQLFloat, GraphQLNonNull, GraphQLObjectType, GraphQLString } from "graphql";
+import { GraphQLFloat, GraphQLObjectType, GraphQLString } from "graphql";
 import { connectionDefinitions, globalIdField } from "graphql-relay";
 import { MovieType } from "../movie/MovieType";
 import { nodeInterface } from "../node/nodeDefinition";
@@ -10,27 +10,27 @@ export const ReviewType = new GraphQLObjectType({
     fields: () => ({
         id: globalIdField('Review'),
         review: {
-            type: new GraphQLNonNull(GraphQLString),
+            type: GraphQLString,
             resolve: ({ review }) => review
         },
         score: {
-            type: new GraphQLNonNull(GraphQLFloat),
+            type: GraphQLFloat,
             resolve: ({ score }) => score
         },
         userId: {
-            type: new GraphQLNonNull(UserType),
+            type: UserType,
             resolve: ({ userId }) => userId
         },
         movieId: {
-            type: new GraphQLNonNull(MovieType),
+            type: MovieType,
             resolve: ({ movieId }) => movieId
         },
         createdAt: {
-            type: new GraphQLNonNull(GraphQLString),
+            type: GraphQLString,
             resolve: ({ createdAt }) => createdAt
         },
         deletedAt: {
-            type: new GraphQLNonNull(GraphQLString),
+            type: GraphQLString,
             resolve: ({ deletedAt }) => deletedAt
         }
     }),

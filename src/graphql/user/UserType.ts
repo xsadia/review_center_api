@@ -1,4 +1,4 @@
-import { GraphQLNonNull, GraphQLObjectType, GraphQLString } from "graphql";
+import { GraphQLObjectType, GraphQLString } from "graphql";
 import { connectionArgs, connectionDefinitions, connectionFromArray, globalIdField } from "graphql-relay";
 import { Review } from "../../models/Review";
 import { nodeInterface } from "../node/nodeDefinition";
