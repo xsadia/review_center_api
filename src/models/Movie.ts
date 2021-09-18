@@ -1,13 +1,15 @@
 import { model, Schema, Types, Document } from 'mongoose';
+import { IGenre } from './Genre';
 import { IReview } from './Review';
 
 export interface IMovie extends Document {
     tmdbId: string;
     title: string;
     firstAirDate: Date;
+    genres: Types.Array<IGenre['_id']>;
     overview: string;
     score: number;
-    reviews: Array<IReview['_id']>;
+    reviews: Types.Array<IReview['_id']>;
     posterPath: string;
     createdAt: Date;
     deletedAt: Date;
@@ -27,6 +29,13 @@ const MovieSchema = new Schema({
         type: Date,
         required: true
     },
+    genres: [
+        {
+            type: Types.ObjectId,
+            ref: 'Genre',
+            default: []
+        }
+    ],
     overview: {
         type: String,
         required: true
