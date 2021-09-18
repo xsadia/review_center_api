@@ -5,7 +5,7 @@ import { Genre } from "../../../models/Genre";
 
 export default mutationWithClientMutationId({
     name: 'PopulateGenres',
-    description: 'Populate Genres Mutatio',
+    description: 'Populate Genres Mutation',
     inputFields: {},
     mutateAndGetPayload: async (_, { user }) => {
         if (!user._id) {
