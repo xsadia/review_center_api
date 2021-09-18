@@ -5,7 +5,7 @@ export interface IUser extends Document {
     username: string;
     email: string;
     password: string;
-    reviews: Array<IReview['_id']>;
+    reviews: Types.Array<IReview['_id']>;
     createdAt: Date;
 }
 
