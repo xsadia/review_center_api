@@ -9,6 +9,10 @@ export const UserType = new GraphQLObjectType({
     description: 'User type',
     fields: () => ({
         id: globalIdField('User'),
+        _id: {
+            type: GraphQLString,
+            resolve: ({ _id }) => _id
+        },
         username: {
             type: GraphQLString,
             resolve: ({ username }) => username

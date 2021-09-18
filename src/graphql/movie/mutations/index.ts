@@ -1,5 +1,5 @@
-import RegisterMovieMutation from "./RegisterMovieMutation";
+import RegisterMovieByNameMutation from "./RegisterMovieByNameMutation";
 
 export default {
-    RegisterMovieMutation
+    RegisterMovieByNameMutation
 };

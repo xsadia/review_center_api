@@ -1,6 +1,9 @@
 import { GraphQLFloat, GraphQLObjectType, GraphQLString } from "graphql";
 import { connectionArgs, connectionDefinitions, connectionFromArray, globalIdField } from "graphql-relay";
+import { Genre } from "../../models/Genre";
+import { Movie } from "../../models/Movie";
 import { Review } from "../../models/Review";
+import { GenreConnection } from "../genre/GenreType";
 import { nodeInterface } from "../node/nodeDefinition";
 import { ReviewConnection } from "../review/ReviewType";
 
@@ -9,6 +12,10 @@ export const MovieType = new GraphQLObjectType({
     description: 'Movie type',
     fields: () => ({
         id: globalIdField('Movie'),
+        _id: {
+            type: GraphQLString,
+            resolve: ({ _id }) => _id
+        },
         tmdbId: {
             type: GraphQLString,
             resolve: ({ tmdbId }) => tmdbId
@@ -28,6 +35,21 @@ export const MovieType = new GraphQLObjectType({
         score: {
             type: GraphQLFloat,
             resolve: ({ score }) => score
+        },
+        genres: {
+            type: GenreConnection,
+            args: connectionArgs,
+            resolve: async (movie, args, context) => {
+                const movieFound = await Movie.findOne({ _id: movie._id });
+                const genres = [];
+
+                for await (let id of movieFound.genres) {
+                    const genreFromCollection = await Genre.findOne({ _id: id });
+                    genres.push(genreFromCollection);
+                }
+
+                return connectionFromArray(genres, args);
+            }
         },
         reviews: {
             type: ReviewConnection,

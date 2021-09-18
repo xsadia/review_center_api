@@ -3,6 +3,7 @@ import { mutationWithClientMutationId } from "graphql-relay";
 import { Movie } from "../../../models/Movie";
 import { MovieType } from "../MovieType";
 import axios from 'axios';
+import { Genre } from "../../../models/Genre";
 
 export default mutationWithClientMutationId({
     name: 'RegisterMovie',
@@ -34,13 +35,18 @@ export default mutationWithClientMutationId({
             };
         }
 
-        const movie = new Movie({
-            tmdbId: data.id,
-            title: data.title,
-            firstAirDate: new Date(data.release_date),
-            overview: data.overview,
-            posterPath: `https://image.tmdb.org/t/p/w500${data.poster_path}`,
-        });
+        const movie = new Movie();
+
+        for await (let id of data.genre_ids) {
+            const genre = await Genre.findOne({ genreId: id });
+            movie.genres.addToSet(genre._id);
+        }
+
+        movie.tmdbId = data.id;
+        movie.title = data.title;
+        movie.firstAirDate = new Date(data.release_date);
+        movie.overview = data.overview;
+        movie.posterPath = `https://image.tmdb.org/t/p/w500${data.poster_path}`;
 
         await movie.save();
 

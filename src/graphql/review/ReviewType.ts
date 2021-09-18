@@ -9,6 +9,10 @@ export const ReviewType = new GraphQLObjectType({
     description: 'Review Type',
     fields: () => ({
         id: globalIdField('Review'),
+        _id: {
+            type: GraphQLString,
+            resolve: ({ _id }) => _id
+        },
         review: {
             type: GraphQLString,
             resolve: ({ review }) => review
