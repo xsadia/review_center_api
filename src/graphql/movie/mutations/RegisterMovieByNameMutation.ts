@@ -24,6 +24,13 @@ export default mutationWithClientMutationId({
 
         const response = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.TMDB_KEY}&language=pt-BR&query=${title}`);
 
+        if (response.data.results <= 0) {
+            return {
+                id: null,
+                error: 'Movie not found'
+            };
+        }
+
         const data = response.data.results[0];
 
         const movieExists = await Movie.findOne({ tmdbId: data.id });
