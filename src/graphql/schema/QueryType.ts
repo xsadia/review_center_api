@@ -1,7 +1,8 @@
 import { GraphQLNonNull, GraphQLObjectType, GraphQLString } from "graphql";
+import { connectionArgs, connectionFromArray } from "graphql-relay";
 import { Movie } from "../../models/Movie";
 import { User } from "../../models/User";
-import { MovieType } from "../movie/MovieType";
+import { MovieConnection, MovieType } from "../movie/MovieType";
 import { UserType } from "../user/UserType";
 
 export const QueryType = new GraphQLObjectType({
@@ -77,6 +78,15 @@ export const QueryType = new GraphQLObjectType({
                 }
 
                 return movie;
+            }
+        },
+        movies: {
+            type: MovieConnection,
+            args: connectionArgs,
+            resolve: async (root, args, ctx) => {
+                const movies = await Movie.find();
+
+                return connectionFromArray(movies, args);
             }
         }
     })
