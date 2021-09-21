@@ -1,5 +1,6 @@
 import { GraphQLFloat, GraphQLObjectType, GraphQLString } from "graphql";
 import { connectionDefinitions, globalIdField } from "graphql-relay";
+import { User } from "../../models/User";
 import { MovieType } from "../movie/MovieType";
 import { nodeInterface } from "../node/nodeDefinition";
 import { UserType } from "../user/UserType";
@@ -23,7 +24,11 @@ export const ReviewType = new GraphQLObjectType({
         },
         userId: {
             type: UserType,
-            resolve: ({ userId }) => userId
+            resolve: async ({ userId }) => {
+                const user = await User.findOne({ _id: userId });
+
+                return user;
+            }
         },
         movieId: {
             type: MovieType,

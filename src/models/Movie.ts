@@ -22,7 +22,6 @@ const MovieSchema = new Schema({
     },
     title: {
         type: String,
-        text: true,
         required: true
     },
     firstAirDate: {
@@ -63,10 +62,4 @@ const MovieSchema = new Schema({
     }
 });
 
-MovieSchema.index({ title: "text" });
-
-const Movie = model<IMovie>('Movie', MovieSchema);
-
-Movie.createIndexes();
-
-export { Movie };
+export const Movie = model<IMovie>('Movie', MovieSchema);

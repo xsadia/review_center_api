@@ -7,6 +7,10 @@ export const GenreType = new GraphQLObjectType({
     description: 'Genre Type',
     fields: () => ({
         id: globalIdField('Genre'),
+        _id: {
+            type: GraphQLString,
+            resolve: ({ _id }) => _id
+        },
         genreId: {
             type: GraphQLInt,
             resolve: ({ genreId }) => genreId

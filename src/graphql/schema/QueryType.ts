@@ -1,7 +1,9 @@
 import { GraphQLNonNull, GraphQLObjectType, GraphQLString } from "graphql";
-import { connectionArgs, connectionFromArray } from "graphql-relay";
+import { connectionArgs, connectionFromArray, fromGlobalId } from "graphql-relay";
+import { Genre } from "../../models/Genre";
 import { Movie } from "../../models/Movie";
 import { User } from "../../models/User";
+import { GenreConnection } from "../genre/GenreType";
 import { MovieConnection, MovieType } from "../movie/MovieType";
 import { UserType } from "../user/UserType";
 
@@ -43,7 +45,10 @@ export const QueryType = new GraphQLObjectType({
                     type: new GraphQLNonNull(GraphQLString)
                 }
             },
-            resolve: async (root, { id }, ctx) => {
+            resolve: async (root, { id: globalId }, ctx) => {
+
+                const { id } = fromGlobalId(globalId);
+
                 const movie = await Movie.findOne({ _id: id });
 
                 if (!movie) {
@@ -58,19 +63,13 @@ export const QueryType = new GraphQLObjectType({
             type: MovieType,
             description: 'Query for a movie by name',
             args: {
-                name: {
+                title: {
                     type: new GraphQLNonNull(GraphQLString)
                 }
             },
-            resolve: async (root, { name }, ctx) => {
-                const movie = await Movie.findOne({
-                    $text: {
-                        $search: name,
-                        $language: "pt",
-                        $caseSensitive: false,
-                        $diacriticSensitive: false
-                    }
-                });
+            resolve: async (root, { title }, ctx) => {
+
+                const movie = await Movie.findOne({ title: { $regex: ".*" + title + ".*", $options: 'i' } });
 
                 if (!movie) {
                     const movie = null;
@@ -85,8 +84,37 @@ export const QueryType = new GraphQLObjectType({
             args: connectionArgs,
             resolve: async (root, args, ctx) => {
                 const movies = await Movie.find();
-
                 return connectionFromArray(movies, args);
+            }
+        },
+        moviesByGenre: {
+            type: MovieConnection,
+            args: {
+                ...connectionArgs,
+                genreId: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve: async (root, args, ctx) => {
+                const genre = await Genre.findOne({ _id: args.genreId });
+
+                const movies = await Movie.find({ genres: genre._id });
+
+                return connectionFromArray(movies, {
+                    after: args.after,
+                    before: args.before,
+                    first: args.first,
+                    last: args.last
+                });
+            }
+        },
+        genres: {
+            type: GenreConnection,
+            args: connectionArgs,
+            resolve: async (root, args, ctx) => {
+                const genres = await Genre.find();
+
+                return connectionFromArray(genres, args);
             }
         }
     })

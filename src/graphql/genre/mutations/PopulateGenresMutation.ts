@@ -19,7 +19,7 @@ export default mutationWithClientMutationId({
 
         if (genresAlreadyPopulated) {
             return {
-                error: 'Permission denied',
+                error: 'Genres already populated',
                 success: false
             };
         }

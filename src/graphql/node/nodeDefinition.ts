@@ -5,6 +5,8 @@ import { Review } from '../../models/Review';
 import { MovieType } from '../movie/MovieType';
 import { ReviewType } from '../review/ReviewType';
 import { UserType } from '../user/UserType';
+import { Genre } from '../../models/Genre';
+import { GenreType } from '../genre/GenreType';
 
 export const { nodeInterface, nodeField, nodesField } = nodeDefinitions(
     async (globalId) => {
@@ -22,6 +24,10 @@ export const { nodeInterface, nodeField, nodesField } = nodeDefinitions(
             return await User.findOne({ _id: id });
         }
 
+        if (type === 'Genre') {
+            return await Genre.findOne({ _id: id });
+        }
+
         return null;
     },
     (obj) => {
@@ -35,6 +41,10 @@ export const { nodeInterface, nodeField, nodesField } = nodeDefinitions(
 
         if (obj instanceof User) {
             return UserType;
+        }
+
+        if (obj instanceof Genre) {
+            return GenreType;
         }
 
         return null;

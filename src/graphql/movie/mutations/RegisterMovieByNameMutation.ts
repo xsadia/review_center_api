@@ -50,7 +50,7 @@ export default mutationWithClientMutationId({
         }
 
         movie.tmdbId = data.id;
-        movie.title = data.title;
+        movie.title = data.title.toLowerCase();
         movie.firstAirDate = new Date(data.release_date);
         movie.overview = data.overview;
         movie.posterPath = `https://image.tmdb.org/t/p/w500${data.poster_path}`;
