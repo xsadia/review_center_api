@@ -1,8 +1,12 @@
 import { GraphQLNonNull, GraphQLString, GraphQLFloat } from "graphql";
-import { mutationWithClientMutationId } from "graphql-relay";
+import {
+  fromGlobalId,
+  mutationWithClientMutationId,
+  toGlobalId,
+} from "graphql-relay";
 import { Movie } from "../../../models/Movie";
 import { Review } from "../../../models/Review";
-import { ReviewType } from "../ReviewType";
+import { ReviewEdge } from "../ReviewType";
 
 export default mutationWithClientMutationId({
   name: "CreateReview",
@@ -26,7 +30,12 @@ export default mutationWithClientMutationId({
       };
     }
 
-    const alreadyReviewed = await Review.findOne({ movieId, userId: user._id });
+    const { id } = fromGlobalId(movieId);
+
+    const alreadyReviewed = await Review.findOne({
+      movieId: id,
+      userId: user._id,
+    });
 
     if (alreadyReviewed) {
       return {
@@ -35,7 +44,7 @@ export default mutationWithClientMutationId({
       };
     }
 
-    const movieExists = await Movie.findOne({ _id: movieId });
+    const movieExists = await Movie.findOne({ _id: id });
 
     if (!movieExists) {
       return {
@@ -47,7 +56,7 @@ export default mutationWithClientMutationId({
     const newReview = new Review({
       review,
       score: Number(score),
-      movieId,
+      movieId: id,
       userId: user._id,
     });
 
@@ -63,11 +72,18 @@ export default mutationWithClientMutationId({
   },
   outputFields: {
     review: {
-      type: ReviewType,
+      type: ReviewEdge,
       resolve: async ({ id }) => {
         const review = await Review.findOne({ _id: id });
 
-        return review;
+        if (!review) {
+          return null;
+        }
+
+        return {
+          cursor: toGlobalId("Review", review._id),
+          node: review,
+        };
       },
     },
     error: {
